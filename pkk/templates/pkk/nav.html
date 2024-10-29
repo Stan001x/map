@@ -1,0 +1,62 @@
+<div class="background-header">
+  <div class="container">
+      <nav class="navbar navbar-expand-lg navbar-light my-navbar-light py-0 ">
+        <div class="container-fluid menu-padding">
+          <div class="me-auto">
+            <a class="navbar-brand py-3 py-lg-0 d-block logo-margin" href="/">
+                <picture alt="" class="">
+                  <source srcset="https://reestr54.ru/images/logo.png" media="(max-width: 991px)"/>
+                  <source srcset="https://reestr54.ru/images/logo.png" media="(min-width: 992px)"/>
+                  <img src="https://reestr54.ru/images/logo.png" class="logo-size">
+                </picture>
+            </a>
+          </div>
+
+          <div class="order-4 order-lg-0 collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-white px-3" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Услуги
+                </a>
+                <ul class="dropdown-menu city-width" aria-labelledby="navbarDropdown">
+                  {% include 'pkk/nav-uslugi.html' %}
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-white px-3" href="price">Цены</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-white px-3" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  О компании
+                </a>
+                <ul class="dropdown-menu city-width" aria-labelledby="navbarDropdown">
+                  {% include 'pkk/nav-about.html' %}
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-white px-3" href="contacts">Контакты</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-white px-3" href="pkk">Кадастровая карта</a>
+              </li>
+            </ul>
+          </div>
+          <div >
+            <a style="font-size: 1.25em" target="_blank" rel="noopener noreferrer" href="https://wa.me/79513626504?text=Здравствуйте,%20интересуют%20кадастровые%20работы%20..." aria-label="Custom">
+              <span class="fa fa-whatsapp fa-2x p-2 p-sm-3 text-success" aria-hidden="true">
+              </span>
+            </a>
+          </div>
+          <div >
+            <a target="_blank" rel="noopener noreferrer" href="tel:+79513626504" aria-label="Custom">
+              <span class="fa fa-phone fa-2x p-2 p-sm-3 text-success" aria-hidden="true">
+              </span>
+            </a>
+          </div>
+          <button class="navbar-toggler my-navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon my-navbar-toggler-icon"></span>
+          </button>
+        </div>
+      </nav>
+  </div>
+</div>

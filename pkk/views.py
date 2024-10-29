@@ -1,5 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
-def index(request):
-    return HttpResponse("Карта")
+def home(request):
+    return render(request,'pkk/home.html')
+
+def pkk(request):
+    return render(request,'pkk/home.html')

@@ -1,0 +1,47 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru-ru" dir="ltr">
+<html>
+ <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="utf-8" />
+  <link href="https://reestr54.ru//images/favicon.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+  <meta name="yandex-verification" content="" />
+  <meta name="robots" content="index, follow" />
+   <meta property="og:title" content="Кадастровые инженеры Новосибирска" />
+  <meta property="og:type" content="website" />
+<!-- Yandex.Metrika counter -->  <!-- /Yandex.Metrika counter -->
+
+  <link href="https://tootour.ru/static/world/css/uikit.min.css" rel="stylesheet" type="text/css">
+  <link href="https://tootour.ru/static/world/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="https://tootour.ru/static/world/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link href="https://tootour.ru/static/world/css/main.css" rel="stylesheet" type="text/css">
+
+  {% block title %}<title>Hello</title>{% endblock title %}
+  {% block description %}<title>Hello</title>{% endblock description %}
+
+
+{% block canonical %}
+<link href="{{ request.path }}" rel="canonical">
+{% endblock canonical %}
+
+
+ </head>
+ <body style="background: #fbfbfd;">
+{% include 'pkk/nav.html' %}
+
+ {% block content %}  <p>Привет, мир</p>{% endblock content %}
+
+<footer class="background-header">
+ <div class="container">
+ <div class="text-white py-4">© {% now "Y" %} Кадастровые инженеры Новосибирска</div>
+ </div>
+
+</footer>
+
+   <script src="https://tootour.ru/static/world/js/uikit.min.js"></script>
+   <script src="https://tootour.ru/static/world/js/bootstrap.min.js"></script>
+   <script src="https://kit.fontawesome.com/93401b620e.js" crossorigin="anonymous"></script>
+ </body>
+</html>

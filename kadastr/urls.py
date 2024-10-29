@@ -5,5 +5,5 @@ from pkk import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('pkk/', include('pkk.urls')),
+    path('', include('pkk.urls')),
 ]
