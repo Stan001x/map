@@ -5,4 +5,4 @@ def home(request):
     return render(request,'pkk/home.html')
 
 def pkk(request):
-    return render(request,'pkk/home.html')
+    return render(request,'pkk/pkk.html')
