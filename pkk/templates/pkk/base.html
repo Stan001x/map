@@ -2,7 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="ru-ru" dir="ltr">
-<html>
+
  <head>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta charset="utf-8" />
@@ -13,10 +13,19 @@
   <meta property="og:type" content="website" />
 <!-- Yandex.Metrika counter -->  <!-- /Yandex.Metrika counter -->
 
-  <link href="https://tootour.ru/static/world/css/uikit.min.css" rel="stylesheet" type="text/css">
-  <link href="https://tootour.ru/static/world/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-  <link href="https://tootour.ru/static/world/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-  <link href="https://tootour.ru/static/world/css/main.css" rel="stylesheet" type="text/css">
+  <link href="{% static 'pkk/css/uikit.min.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'pkk/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'pkk/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'pkk/css/main.css' %}" rel="stylesheet" type="text/css">
+
+     <script src="https://api-maps.yandex.ru/v3/?apikey=197e81e2-a2b5-4e08-9088-a0b4a3f84da6&lang=ru_RU"></script>
+
+       <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+
+
 
   {% block title %}<title>Hello</title>{% endblock title %}
   {% block description %}<title>Hello</title>{% endblock description %}
@@ -26,6 +35,12 @@
 <link href="{{ request.path }}" rel="canonical">
 {% endblock canonical %}
 
+      <style>
+		html, body, #map {
+			height: 100%;
+			margin: 0px;
+		}
+    </style>
 
  </head>
  <body style="background: #fbfbfd;">
@@ -40,8 +55,14 @@
 
 </footer>
 
-   <script src="https://tootour.ru/static/world/js/uikit.min.js"></script>
-   <script src="https://tootour.ru/static/world/js/bootstrap.min.js"></script>
+
+
+   <script src="{% static 'pkk/js/uikit.min.js' %}" ></script>
+   <script src="{% static 'pkk/js/bootstrap.min.js' %}"></script>
+
    <script src="https://kit.fontawesome.com/93401b620e.js" crossorigin="anonymous"></script>
+
+
+
  </body>
 </html>

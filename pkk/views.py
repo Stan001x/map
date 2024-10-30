@@ -6,3 +6,6 @@ def home(request):
 
 def pkk(request):
     return render(request,'pkk/pkk.html')
+
+def pk(request):
+    return render(request,'pkk/pk.html')

@@ -1,0 +1,162 @@
+.background-header {
+background: #2e2e2e;
+}
+
+.my-navbar-light .my-navbar-toggler-icon
+{background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgb(255,204,0)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e")}
+
+.my-navbar-toggler:focus {
+color: #ffcc00;
+}
+
+.tootour-yellow {
+color: #ffcc00;
+}
+
+#sp-cost-count {
+background: #ffcc00;
+}
+
+.cost-cout-height{
+  min-height: 65px;
+  }
+
+.z-index985{
+z-index: 985!important;
+}
+
+.city-width
+{
+min-width: 25rem
+}
+
+.poisk-turov-background
+{
+background: linear-gradient(135deg, rgb(10, 81, 163), rgb(134, 196, 253));
+}
+
+.feedback-card{
+border-radius: 20px;
+box-shadow: 1px 1px 3px #a6a6a6;
+background: whitesmoke;
+}
+
+.str10{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 10;
+    overflow: hidden;
+}
+
+.home-search-background{
+background-image: url(https://tootour.ru/media/images/background-image/main-page.jpg);
+background-position: bottom;
+}
+
+.buy-tour {
+    background: #fff;
+    background-image: url(https://tootour.ru/media/images/background-image/buy-tour-image.webp);
+    padding: 2rem 0 1.5rem 0;
+    color: #fff;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: initial;
+}
+
+.text-color{
+color: #333
+}
+
+.border15{
+border-radius: 15px;
+}
+
+.open-countries-card{
+    border-radius: 20px;
+    overflow: hidden;
+    background: whitesmoke;
+    box-shadow: 1px 1px 3px #a6a6a6;
+}
+
+.open-countries-card:hover{
+    border: 1px solid #d4d9de;
+}
+
+@media (max-width: 575px) {
+.logo-size
+{
+height: 30px;
+}
+
+.menu-padding
+{
+padding-left: 0;
+padding-right: 0;
+}
+
+.logo-margin
+{
+margin-right: 0;
+}
+
+.city-width
+{
+min-width: 19rem
+}
+
+.feedback-card{
+width:294px;
+min-width: 294px;
+}
+
+.home-search-background{
+background-position: top;
+}
+
+.poisk-turov-height{
+min-height: 572px;
+}
+
+
+
+}
+
+@media (min-width: 576px) and (max-width: 767px) {
+
+.feedback-card{
+width:294px;
+min-width: 294px;
+}
+
+.home-search-background{
+background-position: top;
+}
+
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+.feedback-card{
+width:294px;
+min-width: 294px;
+}
+
+.home-search-background{
+background-position: top;
+}
+
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+
+}
+
+@media (min-width: 1200px) and (max-width: 1399px) {
+
+}
+
+@media (min-width: 1400px) {
+.home-search-background{
+background-size: cover;
+}
+}
