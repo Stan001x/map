@@ -13,7 +13,7 @@
     <h1>Публичная кадастровая карта</h1>
 
 
-   <!-- <script>
+    <!-- <script>
         initMap();
 
         async function initMap() {
@@ -41,7 +41,7 @@
     <script src='http://originalsin.github.io/Leaflet.TileLayer.Rosreestr/src/TileLayer.Rosreestr.js'></script>
     <script>
       // Создаем карту
-      var map = L.map('map').setView([55.0302, 82.9205], 10); // Новосибирск
+      var map = L.map('map').setView([55.0302, 82.9205], 15); // Новосибирск
 
       // Добавляем базовые тайлы (Яндекс Карты)
       /*L.tileLayer('https://tiles.api-maps.yandex.ru/v1/tiles/?x=9902&y=5137&z=14&lang=ru_RU&l=map&apikey=5d79c54c-d4f6-44a5-92f5-de2250c24722', {
@@ -50,39 +50,15 @@
       }).addTo(map);*/
 
       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> '
 }).addTo(map);
-
-   /*   // WMS-слой от Росреестра (Пример, вам нужно будет заменить URL и layers)
-      var wmsLayer = L.tileLayer.wms("https://pkk.rosreestr.ru/arcgis/services/Cadastre/Cadastre/MapServer/WMSServer?", {
-        layers: '24', //  Замените на правильное название слоя
-        format: 'image/png',
-        transparent: true
-      }).addTo(map);*/
-
 
        var wmsLayer = L.tileLayer.Rosreestr('https://pkk.rosreestr.ru/arcgis/rest/services/PKK6/CadastreObjects/MapServer/export?layers=show%3A30%2C27%2C24%2C23%2C22&dpi=96&format=PNG32&bboxSR=102100&imageSR=102100&size=1024%2C1024&transparent=true&f=image&bbox={bbox}', {
 
         tileSize: 1024,
-        attribution: 'Rosreestr'
+        attribution: 'Публичная кадастровая карта'
        }).addTo(map);
 
-
-
-
-
-
-     /*  var wmsLayer = L.tileLayer.wms("https://pkk.rosreestr.ru/arcgis/services/PKK6/CadastreWMS/MapServer/WMSServer?", {
-        layers: '24', //  Замените на правильное название слоя
-        format: 'image/png',
-        transparent: true
-      }).addTo(map);*/
-      /*
-       var wmsLayer = L.tileLayer.wms('https://pkk.rosreestr.ru/arcgis/rest/services/PKK6/Cadastre/MapServer/export?layers%3Dshow%3A21&dpi=96&format=PNG32&bboxSR=102100&imageSR=102100&size=1024%2C1024&transparent=true&f=image&bbox={bbox}', {
-
-        tileSize: 1024,
-        attribution: 'Rosreestr'
-       }).addTo(map);*/
 
 
 
@@ -98,4 +74,13 @@
     </script>
 
 </div>
+<div class="m-3">
+    <form action="" method="POST">
+        {% csrf_token %}
+        <p><label for="id_1">Кадастровый номер</label><input type="text" name="build_kad_num" id="id_1"></p>
+        <p><button type="submit">Отправить</button></p>
+
+    </form>
+</div>>
+
  {% endblock %}
