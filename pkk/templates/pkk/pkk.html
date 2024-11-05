@@ -35,10 +35,14 @@
         }
     </script>-->
 
+
+
 <div id="map" style="width: 100%; height: 600px"></div>
  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/leaflet.easybutton/dist/leaflet.easybutton.js"></script>
     <script src='http://originalsin.github.io/Leaflet.TileLayer.Rosreestr/src/TileLayer.Rosreestr.js'></script>
+    <script src="/static/pkk/js/leaflet-bing-layer.js"></script>
+       <script src="/static/pkk/js/pkk.js"></script>
     <script>
       // Создаем карту
       var map = L.map('map').setView([55.0302, 82.9205], 15); // Новосибирск
@@ -49,7 +53,13 @@
         maxZoom: 17
       }).addTo(map);*/
 
-      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+
+    var BING_KEY = 'AuhiCJHlGzhg93IqUH_oCpl_-ZUrIE6SPftlyGYUvr9Amx5nzA-WqGcPquyFZl4L'
+
+    var bingLayer = L.tileLayer.bing(BING_KEY)
+
+
+     var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> '
 }).addTo(map);
 
@@ -58,6 +68,46 @@
         tileSize: 1024,
         attribution: 'Публичная кадастровая карта'
        }).addTo(map);
+
+      var baseLayers = {
+    "Bing": bingLayer,
+    "OpenStreetMap": osm
+};
+
+var overlays = {
+    "Росреестр": wmsLayer
+};
+
+var layerControl = L.control.layers(baseLayers, overlays).addTo(map);
+
+L.control.attribution( {prefix: false, });
+
+
+
+map.on('click', function(ev) {
+   b =ev.latlng;
+   lat = b.lat.toFixed(6);
+   lng = b.lng.toFixed(6);
+   var tooltip = L.tooltip(b, {content: lat + ', ' + lng,})
+    .addTo(map);
+       // ev is an event object (MouseEvent in this case)
+});
+
+
+
+/*a = function(ev){ev.latlng};
+console.log('a');
+console.log(b);*/
+
+
+
+/*const provider = new window.GeoSearch.OpenStreetMapProvider();
+const search = new GeoSearch.GeoSearchControl({ provider: provider, style: 'bar', updateMap: true, autoClose: true,});
+// Include the search box with usefull params. Autoclose and updateMap in my case. Provider is a compulsory parameter.*/
+
+/*L.marker([51.0, -0.09]).addTo(map).bindPopup('A pretty CSS3 popup.<br> Easily customizable.');
+//Creates a marker at [latitude, longitude] coordinates.*/
+
 
 
 
