@@ -36,8 +36,25 @@
     </script>-->
 
 
+<div class="position-relative">
+<div id="map" style="width: 100%; height: 600px"> </div>
+<div class="mx-3 position-absolute" style="top:12px; left: 30px; z-index:999; background-color: white;" >
+    <form action="" method="POST" style="width: 300px" id="form">
+        {% csrf_token %}
+        <input type="text" name="build_kad_num" id="id_1" placeholder="Введите адрес или кадастровый номер" style="border: none; font-size: 15px; width:84%;" class="px-1">
+        <button type="submit" style="background-color: white; border: none;">
+    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 50 50">
+<path d="M 21 3 C 11.601563 3 4 10.601563 4 20 C 4 29.398438 11.601563 37 21 37 C 24.355469 37 27.460938 36.015625 30.09375 34.34375 L 42.375 46.625 L 46.625 42.375 L 34.5 30.28125 C 36.679688 27.421875 38 23.878906 38 20 C 38 10.601563 30.398438 3 21 3 Z M 21 7 C 28.199219 7 34 12.800781 34 20 C 34 27.199219 28.199219 33 21 33 C 13.800781 33 8 27.199219 8 20 C 8 12.800781 13.800781 7 21 7 Z"></path>
+</svg>
+    </button>
+    </form>
+</div>
+<div class="mx-3 position-absolute" style="top:48px; left: 30px; z-index:999; background-color: white; width:300px;">
+    <div id="result" style=></div>
+</div>
+    </div>
 
-<div id="map" style="width: 100%; height: 600px"></div>
+</div>
  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/leaflet.easybutton/dist/leaflet.easybutton.js"></script>
     <script src='http://originalsin.github.io/Leaflet.TileLayer.Rosreestr/src/TileLayer.Rosreestr.js'></script>
@@ -123,14 +140,6 @@ const search = new GeoSearch.GeoSearchControl({ provider: provider, style: 'bar'
       }, 'Уменьшить').addTo(map);*/
     </script>
 
-</div>
-<div class="m-3">
-    <form action="" method="POST">
-        {% csrf_token %}
-        <p><label for="id_1">Кадастровый номер</label><input type="text" name="build_kad_num" id="id_1"></p>
-        <p><button type="submit">Отправить</button></p>
 
-    </form>
-</div>>
 
  {% endblock %}
