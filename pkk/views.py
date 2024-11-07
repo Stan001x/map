@@ -23,6 +23,15 @@ def home(request):
 
 
 def pkk(request):
+    zudict = {'003001000000': 'Земли сельскохозяйственного назначения',
+              '003002000000': 'Земли населенных пунктов',
+              '003003000000': 'Земли промышленности, энергетики, транспорта, связи, радиовещания, телевидения, информатики, земли для обеспечения космической деятельности, земли обороны, безопасности и земли иного специального назначения',
+              '003004000000': 'Земли особо охраняемых территорий и объектов',
+              '003005000000': 'Земли лесного фонда',
+              '003006000000': 'Земли водного фонда',
+              '003007000000': 'Земли запаса',
+              '003008000000': 'Категория не установлена'}
+
     if request.method == 'POST':
         api_client = PKKRosreestrAPIClient()
         cadastral_id = request.POST.get("build_kad_num")
@@ -37,16 +46,30 @@ def pkk(request):
         print(url)
         a = _strip_cadastral_id(build_kad_num['new_kadnum'])
         print(a)
-
-        data = api_client.get_building_by_cadastral_id(**search_params)
-        data1 = api_client.get_parcel_by_cadastral_id(**search_params)
-        print(data['total'])
-        print(data1['total'])
-        print(data1)
-        if data['total'] == 1:
+        try:
+            data = api_client.get_building_by_cadastral_id(**search_params)
+            data1 = api_client.get_parcel_by_cadastral_id(**search_params)
+            print(data)
+            print(data1)
+            if data['total'] == 1:
+                return JsonResponse(data, safe=False)
+            elif data1['total'] == 1:
+                if data1['features'][0]['attrs']['category_type'] in zudict:
+                    print('yes in dict')
+                    a = data1['features'][0]['attrs']['category_type']
+                    data1['features'][0]['attrs']['category_type'] = zudict[a]
+                    print(data1['features'][0]['attrs']['category_type'])
+                    return JsonResponse(data1, safe=False)
+                else:
+                    print('xren')
+                    #a = data1['features'][0]['category_type']
+                    #data1['features'][0]['category_type'] = zudict[a]
+                return JsonResponse(data1, safe=False)
+            data = {'badresponse': '1'}
             return JsonResponse(data, safe=False)
-        return JsonResponse(data1, safe=False)
-
+        except:
+            data = {'badresponse': '1'}
+            return JsonResponse(data, safe=False)
        # print(f'{PKKRosreestrAPIClient.BASE_URL}/features/1/{cadastral_id}')
        # url = f'{PKKRosreestrAPIClient.BASE_URL}/features/1/?text={cadastral_id}&tolerance=1&limit=11'
        # print(url)

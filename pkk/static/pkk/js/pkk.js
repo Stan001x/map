@@ -36,20 +36,46 @@ headers: {
 "X-CSRFToken": csrftoken,
 },
 body: JSON.stringify({new_kadnum: data.kadnum}),
-}).then(response => {return response.json()}).then((data) => {console.log(data)
-    let result = document.getElementById('result');
+}).then(response => {return response.json()}).then((data) => serverResponse(data)).then(closeBtn());
+
+};
+
+function serverResponse(data) {
+console.log(data.total);
+
+if (data.badresponse == 1)
+
+    {let result = document.getElementById('result');
+    result.innerHTML = '<div class="text-end p-3"><button type="button" class="btn-close" id="btn-close" aria-label="Close"></button></div><div class="p-3">Объект не найден либо сервис Росреестра не доступен. Обновите страницу и повторите запрос.</div>';
+    }
+
+else if (data.features[0].type == 5)
+
+    {let result = document.getElementById('result');
     result.innerHTML = '<div class="text-end p-3"><button type="button" class="btn-close" id="btn-close" aria-label="Close"></button></div><ul class="uk-list uk-list-striped "><li><div class="row px-2"><div class="col-4 fw-bold px-0">Вид</div><div class="col-8 px-0">' + data.features[0].attrs.oks_type + '</div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Адрес:</div><div class="col-8 px-0">' +  data.features[0].attrs.address + '</div></div></li></ul>';
     var point = new L.Point(data.features[0].center.x, data.features[0].center.y); // Lon/Lat
     var latlng = L.Projection.SphericalMercator.unproject(point);
     console.log(latlng);
     map.panTo([latlng.lat, latlng.lng], 18);
-    L.marker([latlng.lat, latlng.lng]).addTo(map);
+    L.marker([latlng.lat, latlng.lng]).addTo(map);}
 
-    });
+else if (data.features[0].type == 1)
 
-};
+    {let result = document.getElementById('result');
+    result.innerHTML = '<div class="text-end p-3"><button type="button" class="btn-close" id="btn-close" aria-label="Close"></button></div><ul class="uk-list uk-list-striped "><li><div class="row px-2"><div class="col-4 fw-bold px-0">Категория земель</div><div class="col-8 px-0">' + data.features[0].attrs.category_type + '</div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Адрес:</div><div class="col-8 px-0">' +  data.features[0].attrs.address + '</div></div></li></ul>';
+    var point = new L.Point(data.features[0].center.x, data.features[0].center.y); // Lon/Lat
+    var latlng = L.Projection.SphericalMercator.unproject(point);
+    console.log(latlng);
+    map.panTo([latlng.lat, latlng.lng], 18);
+    L.marker([latlng.lat, latlng.lng]).addTo(map);}
 
-document.getElementById("form").addEventListener("submit", (e) => {
+else
+    {let result = document.getElementById('result');
+    result.innerHTML = '<div class="text-end p-3"><button type="button" class="btn-close" id="btn-close" aria-label="Close"></button></div><div class="p-3">Объект не найден либо сервис Росреестра не доступен. Обновите страницу и повторите запрос.</div>';
+    }
+    };
+
+function closeBtn() {
 setTimeout(() => {
 console.log('поехали')
 document.getElementById("btn-close").addEventListener("click", (e) => {
@@ -57,4 +83,4 @@ let result = document.getElementById('result');
 result.innerHTML = '';
  });
 }, "5000");
- });
+};

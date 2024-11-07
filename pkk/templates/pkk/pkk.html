@@ -9,8 +9,8 @@
 
 
 {% block content %}
-<div class="container">
-    <h1>Публичная кадастровая карта</h1>
+<div class="m-auto  " >
+    <h1 class="text-center">Публичная кадастровая карта</h1>
 
 
     <!-- <script>
@@ -36,8 +36,8 @@
     </script>-->
 
 
-<div class="position-relative">
-<div id="map" style="width: 100%; height: 600px"> </div>
+<div class="position-relative m-auto" style="width: 90%;">
+<div id="map" style="width: 100%; height: 80vh"> </div>
 <div class="mx-3 position-absolute" style="top:12px; left: 30px; z-index:999; background-color: white;" >
     <form action="" method="POST" style="width: 300px" id="form">
         {% csrf_token %}
@@ -86,13 +86,20 @@
         attribution: 'Публичная кадастровая карта'
        }).addTo(map);
 
+       var wmsLayertz = L.tileLayer.Rosreestr('https://pkk.rosreestr.ru/arcgis/rest/services/PKK6/ZONES/MapServer/export?layers=show%3A5&dpi=96&format=PNG32&bbox={bbox}&bboxSR=102100&imageSR=102100&size=1024%2C1024&transparent=true&f=image&_ts=false', {
+
+        tileSize: 1024,
+        attribution: 'Публичная кадастровая карта'
+       });
+
       var baseLayers = {
     "Bing": bingLayer,
     "OpenStreetMap": osm
 };
 
 var overlays = {
-    "Росреестр": wmsLayer
+    "Росреестр": wmsLayer,
+    "Территориальные зоны": wmsLayertz
 };
 
 var layerControl = L.control.layers(baseLayers, overlays).addTo(map);
