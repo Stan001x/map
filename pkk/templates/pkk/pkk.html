@@ -13,6 +13,8 @@
     <h1 class="text-center">Публичная кадастровая карта</h1>
 
 
+
+
     <!-- <script>
         initMap();
 
@@ -39,7 +41,7 @@
 <div class="position-relative m-auto" style="width: 90%;">
 <div id="map" style="width: 100%; height: 80vh"> </div>
 <div class="mx-3 position-absolute" style="top:12px; left: 30px; z-index:999; background-color: white;" >
-    <form action="" method="POST" style="width: 300px" id="form">
+    <form action="" method="POST" style="width: 350px" id="form">
         {% csrf_token %}
         <input type="text" name="build_kad_num" id="id_1" placeholder="Введите адрес или кадастровый номер" style="border: none; font-size: 15px; width:84%;" class="px-1">
         <button type="submit" style="background-color: white; border: none;">
@@ -49,7 +51,7 @@
     </button>
     </form>
 </div>
-<div class="mx-3 position-absolute" style="top:48px; left: 30px; z-index:999; background-color: white; width:300px; max-height: 74vh; overflow-y: auto; overflow-x:clip; font-size: 14px;">
+<div class="mx-3 position-absolute" style="top:48px; left: 30px; z-index:999; background-color: white; width:350px; max-height: 74vh; overflow-y: auto; overflow-x:clip; font-size: 14px;">
     <div id="result" style=></div>
 </div>
     </div>
@@ -146,6 +148,9 @@ const search = new GeoSearch.GeoSearchControl({ provider: provider, style: 'bar'
         map.zoomOut();
       }, 'Уменьшить').addTo(map);*/
     </script>
+
+
+
 
 
 
