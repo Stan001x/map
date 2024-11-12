@@ -2,7 +2,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from rosreestr_api.clients.rosreestr import PKKRosreestrAPIClient, RosreestrAPIClient, AddressWrapper
 import requests
-import json
+import json, re
 import ssl
 from tests import pkk_client_fixtures
 from django.views.generic import TemplateView
@@ -21,6 +21,16 @@ zudict = {'003001000000': 'Земли сельскохозяйственного
 statusdict = {'01': 'Ранее учтенный',
           '06': 'Учтенный',
               }
+
+rightsdict = {100: 'Частная собственность',
+              200: 'Собственность публично-правовых образований'}
+
+parceltypedict = {'parcel': '',
+                  'parcel_mzu': 'Контуры МКЗУ',
+                  'parcel_ez': 'Земельные участки ЕЗП'}
+
+okstypedict = {'construction': 'Сооружение',
+                  'building': 'Здание'}
 
 def _strip_cadastral_id(cadastral_id):
     stripped_cadastral_id = []
@@ -41,48 +51,72 @@ def pkk(request):
         api_client = PKKRosreestrAPIClient()
         #cadastral_id = request.POST.get("build_kad_num")
         build_kad_num = _strip_cadastral_id(json.loads(request.body)['new_kadnum'])
-        print(build_kad_num)
-        search_params = {
-            'cadastral_id': build_kad_num, }
-        url = api_client.SEARCH_INFO_BUILDING_BY_CADASTRAL_ID_URL.format(**search_params)
-        url1 = api_client.SEARCH_INFO_PARCEL_BY_CADASTRAL_ID_URL.format(**search_params)
-        CONTENT_TYPE_JSON = 'application/json'
+        if re.fullmatch(r'\d{1,2}:\d{1,2}:\d{1,7}:\d*', build_kad_num):
+            print(build_kad_num)
+            search_params = {
+                'cadastral_id': build_kad_num, }
+            url = api_client.SEARCH_INFO_BUILDING_BY_CADASTRAL_ID_URL.format(**search_params)
+            url1 = api_client.SEARCH_INFO_PARCEL_BY_CADASTRAL_ID_URL.format(**search_params)
+            CONTENT_TYPE_JSON = 'application/json'
 
-        print(url)
-        print(url1)
+            print(url)
+            print(url1)
 
-        try:
-            data5 = api_client.get_info_building_by_cadastral_id(**search_params)
-            data1 = api_client.get_info_parcel_by_cadastral_id(**search_params)
-        except:
-            data = {'badresponse': '1'}
-            print('ошибка сервера')
-            return JsonResponse(data, safe=False)
-        else:
-            print(data5)
-            print(data1)
-            if data5['feature'] is not None:
-                if data5['feature']['type'] == 5:
-                    print('ОКС')
-                    return JsonResponse(data5, safe=False)
-            elif data1['feature'] is not None:
-                if data1['feature']['type'] == 1:
-                    if data1['feature']['attrs']['category_type'] in zudict:
-                        a = data1['feature']['attrs']['category_type']
-                        data1['feature']['attrs']['category_type'] = zudict[a]
-                    if data1['feature']['attrs']['statecd'] in statusdict:
-                        a = data1['feature']['attrs']['statecd']
-                        data1['feature']['attrs']['statecd'] = statusdict[a]
-                        print(data1['feature']['attrs']['statecd'])
+            try:
+                data5 = api_client.get_info_building_by_cadastral_id(**search_params)
+                data1 = api_client.get_info_parcel_by_cadastral_id(**search_params)
+            except:
+                data = {'badresponse': 'Объект не найден либо сервис Росреестра не доступен. Обновите страницу и повторите запрос.'}
+                print('ошибка сервера')
+                return JsonResponse(data, safe=False)
+            else:
+                print(data5)
+                print(data1)
+                if (data5['feature'] is None) and (data1['feature'] is None):
+                    data = {'badresponse': 'Кадастровый номер не существует'}
+                    return JsonResponse(data, safe=False)
+                elif data5['feature'] is not None:
+                    if data5['feature']['type'] == 5:
+                        if data5['feature']['attrs']['statecd'] in statusdict:
+                            a = data5['feature']['attrs']['statecd']
+                            data5['feature']['attrs']['statecd'] = statusdict[a]
+                            print(data5['feature']['attrs']['statecd'])
+                        if data5['feature']['attrs']['fp'] in rightsdict:
+                            a = data5['feature']['attrs']['fp']
+                            data5['feature']['attrs']['fp'] = rightsdict[a]
+                            print(data5['feature']['attrs']['fp'])
+                        if data5['feature']['attrs']['oks_type'] in okstypedict:
+                            a = data5['feature']['attrs']['oks_type']
+                            data5['feature']['attrs']['oks_type'] = okstypedict[a]
+                            print(data5['feature']['attrs']['oks_type'])
+                        return JsonResponse(data5, safe=False)
+                elif data1['feature'] is not None:
+                    if data1['feature']['type'] == 1:
+                        if data1['feature']['attrs']['category_type'] in zudict:
+                            a = data1['feature']['attrs']['category_type']
+                            data1['feature']['attrs']['category_type'] = zudict[a]
+                        if data1['feature']['attrs']['statecd'] in statusdict:
+                            a = data1['feature']['attrs']['statecd']
+                            data1['feature']['attrs']['statecd'] = statusdict[a]
+                            print(data1['feature']['attrs']['statecd'])
+                        if data1['feature']['attrs']['fp'] in rightsdict:
+                            a = data1['feature']['attrs']['fp']
+                            data1['feature']['attrs']['fp'] = rightsdict[a]
+                            print(data1['feature']['attrs']['fp'])
+                        if data1['feature']['attrs']['parcel_type'] in parceltypedict:
+                            a = data1['feature']['attrs']['parcel_type']
+                            data1['feature']['attrs']['parcel_type'] = parceltypedict[a]
+                            print(data1['feature']['attrs']['parcel_type'])
+                        return JsonResponse(data1, safe=False)
+                    else:
+                        print('xren')
+
                     return JsonResponse(data1, safe=False)
-                else:
-                    print('xren')
 
-                return JsonResponse(data1, safe=False)
-
-            data = {'badresponse': '1'}
-            return JsonResponse(data, safe=False)
-
+                data = {'badresponse': 'Объект не найден либо сервис Росреестра не доступен. Обновите страницу и повторите запрос.'}
+                return JsonResponse(data, safe=False)
+        data = {'badresponse': 'Кадастровый номер не существует.'}
+        return JsonResponse(data, safe=False)
     return render(request, 'pkk/pkk.html')
 
 def pk(request):

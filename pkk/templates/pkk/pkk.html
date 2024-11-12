@@ -6,7 +6,14 @@
 <meta name="description" content="Кадастровые инженеры Новосибирска">
 {% endblock description %}
 
+{% block headjscss  %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src='http://originalsin.github.io/Leaflet.TileLayer.Rosreestr/src/TileLayer.Rosreestr.js'></script>
+<script src="/static/pkk/js/leaflet-bing-layer.js"></script>
 
+{% endblock headjscss  %}
 
 {% block content %}
 <div class="m-auto  " >
@@ -14,28 +21,6 @@
 
 
 
-
-    <!-- <script>
-        initMap();
-
-        async function initMap() {
-            await ymaps3.ready;
-
-            const {YMap, YMapDefaultSchemeLayer} = ymaps3;
-
-            const map = new YMap(
-                document.getElementById('map'),
-                {
-                    location: {
-                        center: [37.588144, 55.733842],
-                        zoom: 10
-                    }
-                }
-            );
-
-            map.addChild(new YMapDefaultSchemeLayer());
-        }
-    </script>-->
 
 
 <div class="position-relative m-auto" style="width: 90%;">
@@ -57,101 +42,14 @@
     </div>
 
 </div>
- <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/leaflet.easybutton/dist/leaflet.easybutton.js"></script>
-    <script src='http://originalsin.github.io/Leaflet.TileLayer.Rosreestr/src/TileLayer.Rosreestr.js'></script>
-    <script src="/static/pkk/js/leaflet-bing-layer.js"></script>
-       <script src="/static/pkk/js/pkk.js"></script>
-    <script>
-      // Создаем карту
-      var map = L.map('map').setView([55.0302, 82.9205], 15); // Новосибирск
-
-      // Добавляем базовые тайлы (Яндекс Карты)
-      /*L.tileLayer('https://tiles.api-maps.yandex.ru/v1/tiles/?x=9902&y=5137&z=14&lang=ru_RU&l=map&apikey=5d79c54c-d4f6-44a5-92f5-de2250c24722', {
-        attribution: '&copy; <a href="https://yandex.ru/maps/">Яндекс Карты</a>',
-        maxZoom: 17
-      }).addTo(map);*/
-
-
-    var BING_KEY = 'AuhiCJHlGzhg93IqUH_oCpl_-ZUrIE6SPftlyGYUvr9Amx5nzA-WqGcPquyFZl4L'
-
-    var bingLayer = L.tileLayer.bing(BING_KEY)
-
-
-     var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> '
-}).addTo(map);
-
-       var wmsLayer = L.tileLayer.Rosreestr('https://pkk.rosreestr.ru/arcgis/rest/services/PKK6/CadastreObjects/MapServer/export?layers=show%3A30%2C27%2C24%2C23%2C22&dpi=96&format=PNG32&bboxSR=102100&imageSR=102100&size=1024%2C1024&transparent=true&f=image&bbox={bbox}', {
-
-        tileSize: 1024,
-        attribution: 'Публичная кадастровая карта'
-       }).addTo(map);
-
-       var wmsLayertz = L.tileLayer.Rosreestr('https://pkk.rosreestr.ru/arcgis/rest/services/PKK6/ZONES/MapServer/export?layers=show%3A5&dpi=96&format=PNG32&bbox={bbox}&bboxSR=102100&imageSR=102100&size=1024%2C1024&transparent=true&f=image&_ts=false', {
-
-        tileSize: 1024,
-        attribution: 'Публичная кадастровая карта'
-       });
-
-      var baseLayers = {
-    "Bing": bingLayer,
-    "OpenStreetMap": osm
-};
-
-var overlays = {
-    "Росреестр": wmsLayer,
-    "Территориальные зоны": wmsLayertz
-};
-
-var layerControl = L.control.layers(baseLayers, overlays).addTo(map);
-
-L.control.attribution( {prefix: false, });
-
-
-
-map.on('click', function(ev) {
-   b =ev.latlng;
-   lat = b.lat.toFixed(6);
-   lng = b.lng.toFixed(6);
-   var tooltip = L.tooltip(b, {content: lat + ', ' + lng,})
-    .addTo(map);
-       // ev is an event object (MouseEvent in this case)
-});
-
-
-
-/*a = function(ev){ev.latlng};
-console.log('a');
-console.log(b);*/
-
-
-
-/*const provider = new window.GeoSearch.OpenStreetMapProvider();
-const search = new GeoSearch.GeoSearchControl({ provider: provider, style: 'bar', updateMap: true, autoClose: true,});
-// Include the search box with usefull params. Autoclose and updateMap in my case. Provider is a compulsory parameter.*/
-
-/*L.marker([51.0, -0.09]).addTo(map).bindPopup('A pretty CSS3 popup.<br> Easily customizable.');
-//Creates a marker at [latitude, longitude] coordinates.*/
 
 
 
 
 
-/*      // Добавьте кнопку zoom
-      L.easyButton('<span class="fa fa-search-plus"></span>', function(btn, map) {
-        map.zoomIn();
-      }, 'Увеличить').addTo(map);
+{% endblock %}
 
-      // Добавьте кнопку zoom out
-      L.easyButton('<span class="fa fa-search-minus"></span>', function(btn, map) {
-        map.zoomOut();
-      }, 'Уменьшить').addTo(map);*/
-    </script>
-
-
-
-
-
-
- {% endblock %}
+{% block bodyjscss  %}
+<script src="/static/pkk/js/mapinit.js"></script>
+<script src="/static/pkk/js/pkk.js"></script>
+{% endblock bodyjscss  %}
