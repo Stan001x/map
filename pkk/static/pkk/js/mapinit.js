@@ -50,8 +50,10 @@ map.on('click', function(ev) {
    b =ev.latlng;
    lat = b.lat.toFixed(6);
    lng = b.lng.toFixed(6);
-   var tooltip = L.tooltip(b, {content: lat + ', ' + lng,})
-    .addTo(map);
+   var tooltip = L.tooltip(b, {content: lat + ', ' + lng,}).addTo(map);
+    const form = lat + ',' + lng;
+    let data = {kadnum: form.replaceAll(' ', '')};
+    searchObj(data);
        // ev is an event object (MouseEvent in this case)
 });
 

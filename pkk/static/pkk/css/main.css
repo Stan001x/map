@@ -9,6 +9,11 @@ background: #2e2e2e;
 color: #ffcc00;
 }
 
+.listresult:hover {
+background: cornsilk;
+cursor: pointer;
+}
+
 .tootour-yellow {
 color: #ffcc00;
 }

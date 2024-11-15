@@ -32,6 +32,10 @@ parceltypedict = {'parcel': '',
 okstypedict = {'construction': 'Сооружение',
                   'building': 'Здание'}
 
+typedict = {1: 'Земельный участок',
+            5: 'Объект капитального строительства',
+            6: 'Территориальная зона'}
+
 def _strip_cadastral_id(cadastral_id):
     stripped_cadastral_id = []
     cadastral_id = cadastral_id.split(':')
@@ -115,6 +119,58 @@ def pkk(request):
 
                 data = {'badresponse': 'Объект не найден либо сервис Росреестра не доступен. Обновите страницу и повторите запрос.'}
                 return JsonResponse(data, safe=False)
+        elif re.fullmatch(r'\d\d\.\d*,[1]?\d{2}\.\d*', build_kad_num):
+            a = build_kad_num.split(",")
+            if (float(a[0]) < 41.185) or (float(a[0]) > 81.843) or (float(a[1]) < 19.638) or (float(a[1]) > 180):
+                data = {'badresponse': 'Данные по координатам не найдены.'}
+                return JsonResponse(data, safe=False)
+            lat = build_kad_num.split(",")[0]
+            long = build_kad_num.split(",")[1]
+            search_params = {
+                'lat': lat, 'long': long,
+                'limit': 20, 'tolerance': 4}
+            url1 = api_client.SEARCH_PARCEL_BY_COORDINATES_URL.format(**search_params)
+            url5 = api_client.SEARCH_BUILDING_BY_COORDINATES_URL.format(**search_params)
+            url6 = api_client.SEARCH_TERZONE_BY_COORDINATES_URL.format(**search_params)
+
+            print(url1)
+            print(url5)
+            print(url6)
+            try:
+                data1 = api_client.get_parcel_by_coordinates(**search_params)
+                data5 = api_client.get_building_by_coordinates(**search_params)
+                data6 = api_client.get_terzone_by_coordinates(**search_params)
+                resultlist = []
+                for i in data1['features']:
+                    print(i)
+                    resultlist.append(i)
+                for i in data5['features']:
+                    print(i)
+                    resultlist.append(i)
+                for i in data6['features']:
+                    print(i)
+                    resultlist.append(i)
+                if len(resultlist) > 0:
+                    for i in resultlist:
+                        if i['type'] in typedict:
+                            a = i['type']
+                            i['type'] = typedict[a]
+
+                    data = {'resultlist': len(resultlist), 'rent': resultlist, 'feature': {'type': 'list',}, 'lat': lat, 'lng': long}
+                    return JsonResponse(data, safe=False)
+                else:
+                    data = {'badresponse': 'Объект не найден либо сервис Росреестра не доступен. Обновите страницу и повторите запрос.', 'lat': lat, 'lng': long}
+                    print('объекты не найдены')
+                    return JsonResponse(data, safe=False)
+
+            except:
+                data = {'badresponse': 'Объект не найден либо сервис Росреестра не доступен. Обновите страницу и повторите запрос.'}
+                print('ошибка сервера')
+                return JsonResponse(data, safe=False)
+
+            data = {'badresponse': 'Получены координаты.'}
+            return JsonResponse(data, safe=False)
+
         data = {'badresponse': 'Кадастровый номер не существует.'}
         return JsonResponse(data, safe=False)
     return render(request, 'pkk/pkk.html')
