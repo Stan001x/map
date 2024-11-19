@@ -293,7 +293,7 @@ map.on('click', function(ev) {
 });
 
 
-  var measureControl = new L.Control.Measure({
+/*  var measureControl = new L.Control.Measure({
     position: 'bottomleft',
     primaryLengthUnit: 'meters',
     secondaryLengthUnit: 'meters',
@@ -306,7 +306,7 @@ map.on('click', function(ev) {
     decPoint: '.',
     thousandsSep: ' '
   });
-  measureControl.addTo(map);
+  measureControl.addTo(map);*/
 
 
 
