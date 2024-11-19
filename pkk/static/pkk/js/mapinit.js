@@ -10,8 +10,13 @@
 
 
     var BING_KEY = 'AuhiCJHlGzhg93IqUH_oCpl_-ZUrIE6SPftlyGYUvr9Amx5nzA-WqGcPquyFZl4L'
-
     var bingLayer = L.tileLayer.bing(BING_KEY)
+
+  const googleSatellite = L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+    attribution: '<a http="https://google.com" target="_blank">Google</a>'
+  });
+
 
 
      var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -30,14 +35,244 @@
         attribution: 'Публичная кадастровая карта'
        });
 
+        var wmsLayercc = L.tileLayer.Rosreestr('https://pkk.rosreestr.ru/arcgis/rest/services/PKK6/ZONES/MapServer/export?layers=show%3A8&dpi=96&format=PNG32&bbox={bbox}&bboxSR=102100&imageSR=102100&size=1024%2C1024&transparent=true&f=image&_ts=false', {
+        tileSize: 1024,
+        attribution: 'Публичная кадастровая карта'
+       });
+
+        var wmsLayerzouit = L.tileLayer.Rosreestr('https://pkk.rosreestr.ru/arcgis/rest/services/PKK6/ZONES/MapServer/export?layers=show%3A4%2C3%2C2%2C1&dpi=96&format=PNG32&bbox={bbox}&bboxSR=102100&imageSR=102100&size=1024%2C1024&transparent=true&f=image&_ts=false', {
+        tileSize: 1024,
+        attribution: 'Публичная кадастровая карта'
+       });
+
+       var mapboxUrl = "https://pkk.rosreestr.ru/arcgis/rest/services/Hosted/caddivsion/VectorTileServer/tile/{z}/{y}/{x}.pbf";
+
+       var mapboxVectorTileOptions = {
+    vectorTileLayerStyles: {
+        "Кадастровые округа": {
+            stroke: !0,
+            color: "#D20404",
+            opacity: 0.5,
+            weight: 1
+        },
+        "Кадастровые округа/label": {
+            stroke: !1,
+            color: "#D20404",
+            opacity: 0.5,
+            weight: 1
+        },
+        "Кадастровые округа:1": {
+            stroke: !0,
+            color: "#D20404",
+            opacity: 0.5,
+            weight: 1
+        },
+        "Кадастровые округа:1/label": {
+            stroke: !1,
+            color: "#D20404",
+            opacity: 0.5,
+            weight: 1
+        },
+        "Кадастровые округа:2": {
+            stroke: !0,
+            color: "#D20404",
+            opacity: 0.5,
+            weight: 1
+        },
+        "Кадастровые округа:2/label": {
+            stroke: !1,
+            color: "#D20404",
+            opacity: 0.5,
+            weight: 1
+        },
+        "Кадастровые районы": {
+            stroke: !0,
+            color: "#D20404",
+            opacity: 0.5,
+            weight: 1
+        },
+        "Кадастровые районы/label": {
+            stroke: !1,
+            color: "#D20404",
+            opacity: 0.5,
+            weight: 1
+        },
+        "Кадастровые районы:1": {
+            stroke: !0,
+            color: "#D20404",
+            opacity: 0.5,
+            weight: 1
+        },
+        "Кадастровые районы:1/label": {
+            stroke: !1,
+            color: "#D20404",
+            opacity: 0.5,
+            weight: 1
+        },
+        "Кадастровые районы:2": {
+            stroke: !0,
+            color: "#D20404",
+            opacity: 0.5,
+            weight: 1
+        },
+        "Кадастровые районы:2/label": {
+            stroke: !1,
+            color: "#D20404",
+            opacity: 0.5,
+            weight: 1
+        },
+        "Кадастровые кварталы": {
+            stroke: !0,
+            color: "#D20404",
+            opacity: 0.5,
+            weight: 0.05,
+                    },
+        "Кадастровые кварталы/label": {
+            stroke: !1,
+            color: "#D20404",
+            opacity: 0.5,
+            weight: 1,
+        },
+        "Здания_area": {
+            stroke: !0,
+            color: "#D20404",
+            opacity: 0.5,
+            weight: 1
+        },
+        "Здания": {
+            stroke: !0,
+            color: "#D20404",
+            opacity: 0.50,
+            weight: 1
+        },
+        "Кварталы_all": {
+            stroke: !0,
+            color: "#D20404",
+            opacity: 0.50,
+            weight: 1
+        },
+        "Дороги": {
+            stroke: !1,
+            color: "#D20404",
+            opacity: 0.50,
+            weight: 1
+        },
+        "Дороги_1m": {
+            stroke: !1,
+            color: "#D20404",
+            opacity: 0.50,
+            weight: 1
+        },
+        "Жд станции": {
+            stroke: !0,
+            color: "#D20404",
+            opacity: 0.50,
+            weight: 1
+        },
+        "Железные дороги": {
+            stroke: !0,
+            color: "#D20404",
+            opacity: 0.50,
+            weight: 1
+        },
+        "Парки": {
+            stroke: !1,
+            color: "#D20404",
+            opacity: 0.50,
+            weight: 1
+        },
+        "Реки (полигоны)": {
+            stroke: !0,
+            color: "#D20404",
+            opacity: 0.50,
+            weight: 1
+        },
+        "Озера (полигоны)_all": {
+            stroke: !1,
+            color: "#D20404",
+            opacity: 0.50,
+            weight: 1
+        },
+        "Озера (полигоны)_area": {
+            stroke: !0,
+            color: "#D20404",
+            opacity: 0.50,
+            weight: 1
+        },
+        "Острова": {
+            stroke: !0,
+            color: "#D20404",
+            opacity: 0.50,
+            weight: 1
+        },
+        "Растительность_1mln ": {
+            stroke: !1,
+            color: "#D20404",
+            opacity: 0.50,
+            weight: 1
+        },
+        "Гидрография линии:2": {
+            stroke: !0,
+            color: "#D20404",
+            opacity: 0.50,
+            weight: 1
+        },
+        "Гидрография линии:1": {
+            stroke: !0,
+            color: "#D20404",
+            opacity: 0.50,
+            weight: 1
+        },
+        "Здания_3d": {
+            stroke: !0,
+            color: "#D20404",
+            opacity: 0.50,
+            weight: 1
+        },
+        "Населенные пункты (полигоны)": {
+            stroke: !0,
+            color: "#D20404",
+            opacity: 0.5,
+            weight: 1
+        },
+        "Кварталы_AREA_100": {
+            stroke: !0,
+            color: "#D20404",
+            opacity: 0.50,
+            weight: 1
+        },
+        "Кварталы_AREA_500": {
+            stroke: !0,
+            color: "#D20404",
+            opacity: 0.50,
+            weight: 1
+        },
+    },
+    minNativeZoom: 4,
+    maxNativeZoom: 11,
+    // rendererFactory: L.canvas.tile,
+    rendererFactory: L.svg.tile,
+    //                         interactive: true
+
+
+};
+
+       var mapboxPbfLayer = L.vectorGrid.protobuf(mapboxUrl, mapboxVectorTileOptions);
+
       var baseLayers = {
-    "Bing": bingLayer,
-    "OpenStreetMap": osm
+      "OpenStreetMap": osm,
+      'Google Спутник': googleSatellite,
+      "Bing Спутник": bingLayer,
+
+
 };
 
 var overlays = {
     "Росреестр": wmsLayer,
-    "Территориальные зоны": wmsLayertz
+    "Территориальные зоны": wmsLayertz,
+    "Красные линии": wmsLayercc,
+    "Кадастровые квартала": mapboxPbfLayer,
+    "ЗОУИТ": wmsLayerzouit,
 };
 
 var layerControl = L.control.layers(baseLayers, overlays).addTo(map);
@@ -57,6 +292,21 @@ map.on('click', function(ev) {
        // ev is an event object (MouseEvent in this case)
 });
 
+
+  var measureControl = new L.Control.Measure({
+    position: 'bottomleft',
+    primaryLengthUnit: 'meters',
+    secondaryLengthUnit: 'meters',
+    primaryAreaUnit: 'sqmeters',
+    secondaryAreaUnit: 'sqmeters',
+    activeColor: '#008B8B',
+    completedColor: '#006400',
+    units: 'meters',
+    localization: 'ru',
+    decPoint: '.',
+    thousandsSep: ' '
+  });
+  measureControl.addTo(map);
 
 
 

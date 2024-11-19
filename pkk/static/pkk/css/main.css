@@ -88,6 +88,28 @@ border-radius: 15px;
     border: 1px solid #d4d9de;
 }
 
+.resultsbody{
+    top: 48px;
+    left: 30px;
+    z-index: 999;
+    background-color: white;
+    width: 350px;
+    max-height: 74vh;
+    overflow-y: auto;
+    overflow-x: clip;
+    font-size: 14px;
+}
+
+.formbody{
+width: 350px;
+}
+
+.inputbody{
+border: none;
+font-size: 15px;
+width:84%;
+}
+
 @media (max-width: 575px) {
 .logo-size
 {
@@ -123,7 +145,27 @@ background-position: top;
 min-height: 572px;
 }
 
+.resultsbody{
+width: calc(100% - 58px);
+max-height: 50vh;
+}
 
+.formbase{
+width: calc(100% - 106px);
+}
+
+.formbody{
+width: 100%;
+}
+
+
+.inputbody{
+width:77%;
+}
+
+.inputbody::placeholder{
+font-size: 10px;
+}
 
 }
 
