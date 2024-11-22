@@ -30,6 +30,7 @@ parceltypedict = {'parcel': '',
                   'parcel_ez': 'Земельные участки ЕЗП'}
 
 okstypedict = {'construction': 'Сооружение',
+               'incomplete': 'Объект незавершенного строительства',
                   'building': 'Здание'}
 
 typedict = {1: 'Земельный участок',
@@ -164,7 +165,7 @@ def pkk(request):
                     return JsonResponse(data, safe=False)
 
             except:
-                data = {'badresponse': 'Объект не найден либо сервис Росреестра не доступен. Обновите страницу и повторите запрос.'}
+                data = {'badresponse': 'Объект не найден либо сервис Росреестра не доступен. Обновите страницу и повторите запрос.', 'lat': lat, 'lng': long}
                 print('ошибка сервера')
                 return JsonResponse(data, safe=False)
 

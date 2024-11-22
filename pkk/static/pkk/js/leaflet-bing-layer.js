@@ -69,6 +69,7 @@ L.TileLayer.Bing = L.TileLayer.extend({
     imagerySet: 'Aerial',
     culture: 'en-US',
     minZoom: 1,
+    maxZoom: 19,
     minNativeZoom: 1,
     maxNativeZoom: 19
   },

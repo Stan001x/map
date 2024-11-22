@@ -1,5 +1,6 @@
  document.getElementById("form").addEventListener("submit", (e) => {
  e.preventDefault();
+ document.getElementById('backtolist').classList.add('d-none');
  const form = document.getElementById("form");
 let data = {kadnum: form.querySelector("[name='build_kad_num']").value.replaceAll(' ', '')};
  searchObj(data);
@@ -26,12 +27,12 @@ var csrftoken = getCookie('csrftoken');
 
 function searchObj(data) {
 
-
+cleanResults();
 document.getElementById('result').innerHTML = '<progress id="js-progressbar" class="uk-progress" value="1" max="100"></progress>';
 progressBar();
 
 
-fetch("http://127.0.0.1:8000/pkk/", {
+fetch("/", {
 method: 'POST',
 headers: {
 'Content-type': 'application/json; charset=UTF-8',
@@ -47,7 +48,10 @@ function serverResponse(data) {
 if (data.badresponse)
 
     {let result = document.getElementById('result');
-    result.innerHTML = '<div class="text-end p-3"><button type="button" class="btn-close" id="btn-close" aria-label="Close"></button></div><div class="p-3"><div class="text-bg-warning p-2 rounded-4">' + data.badresponse + '</div></div>';
+    result.innerHTML = '<div class="p-3"><div class="text-bg-warning p-2 rounded-4">' + data.badresponse + '</div></div>';
+    document.getElementById('resulthead').classList.remove('d-none');
+    document.getElementById('resulthead').classList.add('d-flex');
+    document.getElementById('takeorder').classList.remove('d-none');
     if (data.lat)
         {var point = new L.Point(data.lat, data.lng);
         map.panTo([data.lat, data.lng], 18);
@@ -58,11 +62,16 @@ else if (data.feature.type == 5)
 
     {oksResult(data).then(data => oksCommonResult(data));
     if (data.feature.center == null)
-        {document.getElementById('oksnoborders').innerHTML = '<span class="badge text-bg-warning">Без координат границ</span>';
-        document.getElementById('takeorder').innerHTML = '<button type="button" class="btn btn-primary">Заказать привязку объекта к земельному участку</button>';}
+        {document.getElementById('resulthead').classList.remove('d-none');
+        document.getElementById('resulthead').classList.add('d-flex');
+        document.getElementById('takeorder').classList.remove('d-none');
+        document.getElementById('noborders').innerHTML = '<span class="badge text-bg-warning">Без координат границ</span>';
+        document.getElementById('orderbutton').innerHTML = '<span></span><span></span><span></span><span></span>Заказать привязку объекта к земельному участку';}
 
     else if (data.feature.center != null)
-        {document.getElementById('takeorder').innerHTML = '<button type="button" class="btn btn-primary">Заказать кадастровые работы</button>';
+        {document.getElementById('resulthead').classList.remove('d-none');
+        document.getElementById('resulthead').classList.add('d-flex');
+        document.getElementById('takeorder').classList.remove('d-none');
         var point = new L.Point(data.feature.center.x, data.feature.center.y); // Lon/Lat
         var latlng = L.Projection.SphericalMercator.unproject(point);
         map.panTo([latlng.lat, latlng.lng], 18);
@@ -72,10 +81,16 @@ else if (data.feature.type == 1)
 
     {zuResult(data).then(data => zuCommonResult(data));
     if (data.feature.center == null)
-        {document.getElementById('zunoborders').innerHTML = '<span class="badge text-bg-warning">Без координат границ</span>';
-        document.getElementById('takeorder').innerHTML = '<button type="button" class="btn btn-primary">Заказать межевание</button>';}
+        {document.getElementById('resulthead').classList.remove('d-none');
+        document.getElementById('resulthead').classList.add('d-flex');
+        document.getElementById('takeorder').classList.remove('d-none');
+        document.getElementById('noborders').innerHTML = '<span class="badge text-bg-warning">Без координат границ</span>';
+        document.getElementById('orderbutton').innerHTML = '<span></span><span></span><span></span><span></span>Заказать межевание';}
     else if (data.feature.center != null)
-        {document.getElementById('takeorder').innerHTML = '<button type="button" class="btn btn-primary">Заказать проверку границ на местности</button>';
+        {document.getElementById('resulthead').classList.remove('d-none');
+        document.getElementById('resulthead').classList.add('d-flex');
+        document.getElementById('takeorder').classList.remove('d-none');
+        document.getElementById('orderbutton').innerHTML = '<span></span><span></span><span></span><span></span>Заказать проверку границ на местности';
         var point = new L.Point(data.feature.center.x, data.feature.center.y); // Lon/Lat
         var latlng = L.Projection.SphericalMercator.unproject(point);
         map.panTo([latlng.lat, latlng.lng], 18);
@@ -86,31 +101,59 @@ else if (data.feature.type == 'list')
      map.panTo([data.lat, data.lng], 18);
      L.marker([data.lat, data.lng]).addTo(map);
      listResult(data);
-     document.getElementById('takeorder').innerHTML = '<button type="button" class="btn btn-primary">Заказать кадастровые работы</button>';}
+     document.getElementById('orderbutton').innerHTML = '<span></span><span></span><span></span><span></span>Заказать кадастровые работы';}
     };
 
 function closeBtn() {
-setTimeout(() => {
 document.getElementById("btn-close").addEventListener("click", (e) => {
-let result = document.getElementById('result');
-result.innerHTML = '';
- });
-}, "5000");
+cleanResults();
+});
 };
 
+function backtolist() {
+document.getElementById("btn-back").addEventListener("click", (e) => {
+document.getElementById("backtolist").classList.add('d-none');
+document.getElementById('result').innerHTML = '';
+document.getElementById('list').classList.remove('d-none');
+});
+};
+
+/*Оставить заявку*/
+document.getElementsByClassName("animated-button8")[0].addEventListener("click", (e) => {
+document.getElementById("wabuttons").classList.toggle('d-none');
+});
+
+
+function cleanResults() {
+let result = document.getElementById('result');
+result.innerHTML = '';
+document.getElementById('resulthead').classList.remove('d-flex');
+document.getElementById('resulthead').classList.add('d-none');
+document.getElementById('noborders').innerHTML = '';
+document.getElementById('takeorder').classList.add('d-none');
+document.getElementById('orderbutton').innerHTML = '<span></span><span></span><span></span><span></span>Заказать кадастровые работы';
+document.getElementById('list').classList.add('d-none');
+document.getElementById('backtolist').classList.add('d-none');
+document.getElementById('wabuttons').classList.add('d-none');
+}
+
 function zuResult(data) {let result = document.getElementById('result');
-    result.innerHTML = '<div class="d-flex p-3"><div class="flex-grow-1" id="zunoborders"></div><div><button type="button" class="btn-close" id="btn-close" aria-label="Close"></button></div></div><div id="takeorder" class="text-center p-2"></div><ul class="uk-list uk-list-striped" ><li><div class="row px-2"><div class="col-4 fw-bold px-0">Вид</div><div class="col-8 px-0">Земельный участок</div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Кадастровый номер</div><div class="col-8 px-0" id="zucn"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Кадастровый квартал</div><div class="col-8 px-0" id="zukvartalcn"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Кадастровый номер ЕЗП:</div><div class="col-8 px-0" id="zuparent_cn"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Адрес:</div><div class="col-8 px-0" id="zuaddress"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Площадь:</div><div class="col-8 px-0" id="zuarea"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Статус:</div><div class="col-8 px-0" id="zustatecd"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Категория земель</div><div class="col-8 px-0" id="zucategory_type"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Разрешенное использование</div><div class="col-8 px-0" id="zuutil_by_doc"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Форма собственности</div><div class="col-8 px-0" id="zufp"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Кадастровая стоимость</div><div class="col-8 px-0" id="zucad_cost"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Дата применения кадастровой стоимости</div><div class="col-8 px-0" id="zuapplication_date"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Состав</div><div class="col-8 px-0" id="zuparcel_type"></div></div></li></ul>';
+    result.innerHTML = '<ul class="uk-list uk-list-striped" ><li><div class="row px-2"><div class="col-4 fw-bold px-0">Вид</div><div class="col-8 px-0">Земельный участок</div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Кадастровый номер</div><div class="col-8 px-0" id="zucn"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Кадастровый квартал</div><div class="col-8 px-0" id="zukvartalcn"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Кадастровый номер ЕЗП:</div><div class="col-8 px-0" id="zuparent_cn"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Адрес:</div><div class="col-8 px-0" id="zuaddress"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Площадь:</div><div class="col-8 px-0" id="zuarea"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Статус:</div><div class="col-8 px-0" id="zustatecd"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Категория земель</div><div class="col-8 px-0" id="zucategory_type"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Разрешенное использование</div><div class="col-8 px-0" id="zuutil_by_doc"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Форма собственности</div><div class="col-8 px-0" id="zufp"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Кадастровая стоимость</div><div class="col-8 px-0" id="zucad_cost"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Дата применения кадастровой стоимости</div><div class="col-8 px-0" id="zuapplication_date"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Состав</div><div class="col-8 px-0" id="zuparcel_type"></div></div></li></ul>';
     return Promise.resolve(data);
 };
 
 function oksResult(data) {let result = document.getElementById('result');
-    result.innerHTML = '<div class="d-flex p-3"><div class="flex-grow-1" id="oksnoborders"></div><div><button type="button" class="btn-close" id="btn-close" aria-label="Close"></button></div></div><div id="takeorder" class="text-center p-2"></div><ul class="uk-list uk-list-striped" ><li><div class="row px-2"><div class="col-4 fw-bold px-0">Тип</div><div class="col-8 px-0">Объект недвижимости</div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Вид</div><div class="col-8 px-0" id="oks_type"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Кадастровый номер</div><div class="col-8 px-0" id="okscn"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Кадастровый квартал</div><div class="col-8 px-0" id="okskvartalcn"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Адрес:</div><div class="col-8 px-0" id="oksaddress"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Наименование:</div><div class="col-8 px-0" id="oksname"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Назначение:</div><div class="col-8 px-0" id="okspurpose_name"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Площадь общая:</div><div class="col-8 px-0" id="oksarea_value"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Статус:</div><div class="col-8 px-0" id="oksstatecd"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Разрешенное использование:</div><div class="col-8 px-0" id=""></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">По документу:</div><div class="col-8 px-0" id=""></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Форма собственности</div><div class="col-8 px-0" id="oksfp"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Кадастровая стоимость</div><div class="col-8 px-0" id="okscad_cost"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Дата применения кадастровой стоимости</div><div class="col-8 px-0" id="oksapplication_date"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Основные характеристики:</div><div class="col-8 px-0" id=""></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Количество этажей (в том числе подземных):</div><div class="col-8 px-0" id="oksfloors"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Количество подземных этажей:</div><div class="col-8 px-0" id="oksunderground_floors"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Материал стен:</div><div class="col-8 px-0" id="okselements_construct"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Высота:</div><div class="col-8 px-0" id="oksheight"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Глубина:</div><div class="col-8 px-0" id="oksdepth"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Протяженность:</div><div class="col-8 px-0" id="oksspread"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Объем:</div><div class="col-8 px-0" id="oksvolume"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Площадь застройки:</div><div class="col-8 px-0" id="oksarea_dev"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Завершение строительства:</div><div class="col-8 px-0" id="oksyear_built"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Ввод в эксплуатацию:</div><div class="col-8 px-0" id="oksyear_used"></div></div></li></ul>';
+    result.innerHTML = '<ul class="uk-list uk-list-striped" ><li><div class="row px-2"><div class="col-4 fw-bold px-0">Тип</div><div class="col-8 px-0">Объект недвижимости</div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Вид</div><div class="col-8 px-0" id="oks_type"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Кадастровый номер</div><div class="col-8 px-0" id="okscn"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Кадастровый квартал</div><div class="col-8 px-0" id="okskvartalcn"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Адрес:</div><div class="col-8 px-0" id="oksaddress"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Наименование:</div><div class="col-8 px-0" id="oksname"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Назначение:</div><div class="col-8 px-0" id="okspurpose_name"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Площадь общая:</div><div class="col-8 px-0" id="oksarea_value"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Статус:</div><div class="col-8 px-0" id="oksstatecd"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Разрешенное использование:</div><div class="col-8 px-0" id=""></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">По документу:</div><div class="col-8 px-0" id=""></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Форма собственности</div><div class="col-8 px-0" id="oksfp"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Кадастровая стоимость</div><div class="col-8 px-0" id="okscad_cost"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Дата применения кадастровой стоимости</div><div class="col-8 px-0" id="oksapplication_date"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Основные характеристики:</div><div class="col-8 px-0" id=""></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Количество этажей (в том числе подземных):</div><div class="col-8 px-0" id="oksfloors"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Количество подземных этажей:</div><div class="col-8 px-0" id="oksunderground_floors"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Материал стен:</div><div class="col-8 px-0" id="okselements_construct"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Высота:</div><div class="col-8 px-0" id="oksheight"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Глубина:</div><div class="col-8 px-0" id="oksdepth"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Протяженность:</div><div class="col-8 px-0" id="oksspread"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Объем:</div><div class="col-8 px-0" id="oksvolume"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Площадь застройки:</div><div class="col-8 px-0" id="oksarea_dev"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Завершение строительства:</div><div class="col-8 px-0" id="oksyear_built"></div></div></li><li><div class="row px-2"><div class="col-4 fw-bold px-0">Ввод в эксплуатацию:</div><div class="col-8 px-0" id="oksyear_used"></div></div></li></ul>';
     return Promise.resolve(data);
 };
 
 function listResult(data) {
-let result = document.getElementById('result');
-result.innerHTML = '<div class="d-flex p-3"><div class="flex-grow-1" id=""></div><div><button type="button" class="btn-close" id="btn-close" aria-label="Close"></button></div></div><div id="takeorder" class="text-center p-2"></div><ul class="uk-list uk-list-striped" id="list"></ul>';
+        document.getElementById('resulthead').classList.remove('d-none');
+        document.getElementById('resulthead').classList.add('d-flex');
+        document.getElementById('takeorder').classList.remove('d-none');
+        document.getElementById('list').classList.remove('d-none');
+        document.getElementById('list').innerHTML = '';
+        document.getElementById('result').innerHTML = '';
 var mylist = document.getElementById("list");
 for (var i = 0; i < data.resultlist; i++) {
     if (data.rent[i].attrs.address)
@@ -131,6 +174,8 @@ let data = {
 kadnum: form.replaceAll(' ', ''),
 };
   searchObj(data);
+  document.getElementById('backtolist').classList.remove('d-none');
+  backtolist();
 })
 });
 }
@@ -159,7 +204,8 @@ function oksCommonResult(data) {
     document.getElementById('oksaddress').innerHTML = data.feature.attrs.address;
     document.getElementById('oksname').innerHTML = data.feature.attrs.name;
     document.getElementById('okspurpose_name').innerHTML = data.feature.attrs.purpose_name;
-    document.getElementById('oksarea_value').innerHTML = data.feature.attrs.area_value.toLocaleString() + ' кв.м.';
+    if (data.feature.attrs.area_value)
+        {document.getElementById('oksarea_value').innerHTML = data.feature.attrs.area_value.toLocaleString() + ' кв.м.';}
     document.getElementById('oksstatecd').innerHTML = data.feature.attrs.statecd;
     document.getElementById('oksfp').innerHTML = data.feature.attrs.fp;
     document.getElementById('okscad_cost').innerHTML = data.feature.attrs.cad_cost.toLocaleString() + ' руб.';
@@ -168,7 +214,7 @@ function oksCommonResult(data) {
     document.getElementById('oksunderground_floors').innerHTML = data.feature.attrs.underground_floors;
     document.getElementById('oksheight').innerHTML = data.feature.attrs.height;
     document.getElementById('oksdepth').innerHTML = data.feature.attrs.depth;
-    document.getElementById('oksspread').innerHTML = data.feature.attrs.spread;
+    document.getElementById('oksspread').innerHTML = data.feature.attrs.spread + ' м';
     document.getElementById('oksvolume').innerHTML = data.feature.attrs.volume;
     document.getElementById('oksarea_dev').innerHTML = data.feature.attrs.area_dev;
     document.getElementById('oksyear_built').innerHTML = data.feature.attrs.year_built;

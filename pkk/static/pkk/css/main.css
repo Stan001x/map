@@ -1,5 +1,28 @@
+body::-webkit-scrollbar {
+  width: 3px;               /* ширина всей полосы прокрутки */
+}
+
+body::-webkit-scrollbar-track {
+  background: none;        /* цвет зоны отслеживания */
+}
+
 .background-header {
 background: #2e2e2e;
+}
+
+.dropdown-item:focus, .dropdown-item:hover{
+border-radius: 10px;
+}
+
+.menu-card {
+background: white;
+border-radius: 10px;
+}
+
+.orderbuttons {
+    background: ghostwhite;
+    border-radius: 15px;
+    margin: 15px;
 }
 
 .my-navbar-light .my-navbar-toggler-icon
@@ -30,9 +53,13 @@ background: #ffcc00;
 z-index: 985!important;
 }
 
+.perenos {
+white-space: normal;
+}
+
 .city-width
 {
-min-width: 25rem
+min-width: 15rem
 }
 
 .poisk-turov-background
@@ -107,7 +134,7 @@ width: 350px;
 .inputbody{
 border: none;
 font-size: 15px;
-width:84%;
+width:83%;
 }
 
 @media (max-width: 575px) {
@@ -160,7 +187,7 @@ width: 100%;
 
 
 .inputbody{
-width:77%;
+width:76%;
 }
 
 .inputbody::placeholder{

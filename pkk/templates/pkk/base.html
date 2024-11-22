@@ -5,13 +5,18 @@
 
  <head>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta charset="utf-8" />
+  <meta http-equiv=Content-Type content="text/html; charset=utf-8">
   <link href="https://reestr54.ru//images/favicon.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
   <meta name="yandex-verification" content="" />
-  <meta name="robots" content="index, follow" />
-   <meta property="og:title" content="Кадастровые инженеры Новосибирска" />
+  <meta name="robots" content="noyaca">
+  <meta name="robots" content="noodp"><meta name=robots content=INDEX,FOLLOW>
   <meta property="og:type" content="website" />
-<!-- Yandex.Metrika counter -->  <!-- /Yandex.Metrika counter -->
+  <meta property="og:url" content="https://pkk.reestr54.ru/">
+  <meta property="og:title" content="Публичная кадастровая карта" />
+  <meta property="og:description" content="Поиск объектов недвижимости на Публичной кадастровой карте">
+  <meta property="og:image" content="https://reestr54.ru//images/favicon.png">
+<!-- Yandex.Metrika counter --> <script type="text/javascript" > (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)}; m[i].l=1*new Date(); for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }} k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)}) (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym"); ym(57586846, "init", { clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true }); </script> <noscript><div><img src="https://mc.yandex.ru/watch/57586846" style="position:absolute; left:-9999px;" alt="" /></div></noscript> <!-- /Yandex.Metrika counter -->
+<meta name="yandex-verification" content="5336623c4ee42774" />
 
   <link href="{% static 'pkk/css/uikit.min.css' %}" rel="stylesheet" type="text/css">
   <link href="{% static 'pkk/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
@@ -32,7 +37,7 @@
 
 
 {% block canonical %}
-<link href="{{ request.path }}" rel="canonical">
+<link href="{{request.scheme}}://{{request.get_host}}{{ request.path }}" rel="canonical">
 {% endblock canonical %}
 
       <style>
@@ -54,6 +59,17 @@
 <footer class="background-header">
  <div class="container">
  <div class="text-white py-4">© {% now "Y" %} Кадастровые инженеры Новосибирска</div>
+  <div itemscope itemtype=https://schema.org/Organization>
+<meta itemprop=name content=Tekhnocentr>
+<meta itemprop=address content="630007 г. Новосибирск, ул. Коммунистическая, д. 35, вход 2, этаж 3, офис 312">
+<meta itemprop=image content=https://reestr54.ru/images/logo.png>
+<div class=footerPhone py-4>
+<a href="tel:7 (383) 223-96-81" class="text-white" >
+<span class="fa fa-phone  pe-2" aria-hidden="true"></span>
+<span itemprop=telephone >+7 (383) 223-96-81</span>
+</a>
+</div>
+</div>
  </div>
 
 </footer>

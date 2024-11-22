@@ -2,9 +2,11 @@
 {% load static %}
 
 
-{% block title %}<title>Кадастровые инженеры Новосибирска</title>{% endblock title %}
+{% block title %}<title>Публичная кадастровая карта Новосибирской области {% now "Y" %}</title>{% endblock title %}
 
-{% block description %}<meta name="description" content="Кадастровые инженеры Новосибирска">{% endblock description %}
+{% block description %}<meta name="description" content="Получить полную информацию по земельным участкам и объектам капитального строительства на Публичной кадастровой карте по кадастровому номеру, координатам">{% endblock description %}
+
+
 
 {% block headjscss  %}
 <link href="{% static 'pkk/css/leaflet.css' %}" rel="stylesheet" type="text/css">
@@ -15,11 +17,12 @@
 <!--<script src="{% static 'pkk/js/leaflet-measure.min.js' %}" ></script>-->
 <script src="{% static 'pkk/js/TileLayer.Rosreestr.js' %}" ></script>
 <script src="/static/pkk/js/leaflet-bing-layer.js"></script>
+<link href="{% static 'pkk/css/button.css' %}" rel="stylesheet" type="text/css">
 {% endblock headjscss  %}
 
 {% block content %}
 <div class="m-auto  " >
-    <h1 class="text-center">Публичная кадастровая карта</h1>
+    <h1 class="text-center" >Публичная кадастровая карта</h1>
     <div class="position-relative m-auto" style="width: 90%;">
         <div id="map" style="width: 100%; height: 80vh"></div>
         <div class="mx-3 position-absolute formbase" style="top:12px; left: 30px; z-index:999; background-color: white;" >
@@ -34,10 +37,36 @@
             </form>
         </div>
         <div class="mx-3 position-absolute resultsbody" style="">
+            <div class="d-none p-3" id="resulthead"><div class="flex-grow-1" id="noborders"></div><div><button type="button" class="btn-close" id="btn-close" aria-label="Close"></button></div></div>
+            <div id="takeorder" class="text-center p-2 d-none" >
+                <button type="button" class="btn btn-primary animated-button8" id="orderbutton"><span></span><span></span><span></span><span></span>Заказать кадастровые работы</button>
+                <div id="wabuttons" class="d-none d-flex justify-content-around orderbuttons">
+                    <div >
+                        <a style="font-size: 1.25em" target="_blank" rel="noopener noreferrer" href="https://wa.me/79513626504?text=Здравствуйте,%20интересуют%20кадастровые%20работы%20..." aria-label="Custom" >
+                            <span class="fa fa-whatsapp fa-2x p-2 p-sm-3 text-success " aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Написать в WhatsApp"></span>
+                        </a>
+                    </div>
+                    <div>
+                        <a style="font-size: 1.25em" target="_blank" rel="noopener noreferrer" href="https://t.me/+79513626504?text=Здравствуйте,%20интересуют%20кадастровые%20работы%20..." aria-label="Custom">
+                            <span class="fa-brands fa-telegram fa-2x p-2 p-sm-3 text-primary" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Написать в Telegram"></span>
+                        </a>
+                    </div>
+                    <div>
+                        <a style="font-size: 1.25em" target="_blank" rel="noopener noreferrer" href="tel:+79513626504" aria-label="Custom">
+                            <span class="fa-solid fa-phone p-2 p-sm-3" style="font-size: 1.8em; color: #ff7900;" aria-hidden="true" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" data-bs-title="Позвонить по </br> тел. +7 (383) 223 96 81"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <ul class="uk-list uk-list-striped d-none" id="list"></ul>
+            <div id="backtolist" class="d-none text-center p-2"><button type="button" class="btn btn-outline-primary" id="btn-back">Вернуться к списку</button></div>
             <div id="result" style=></div>
         </div>
     </div>
 </div>
+
+
+
 {% endblock %}
 
 {% block bodyjscss  %}

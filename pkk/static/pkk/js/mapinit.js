@@ -1,4 +1,5 @@
-
+const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
       // Создаем карту
       var map = L.map('map').setView([55.0302, 82.9205], 15); // Новосибирск
 
@@ -14,35 +15,41 @@
 
   const googleSatellite = L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-    attribution: '<a http="https://google.com" target="_blank">Google</a>'
+    attribution: '<a http="https://google.com" target="_blank">Google</a>',
+    maxZoom: 20
   });
 
 
 
      var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> '
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    maxZoom: 20
 }).addTo(map);
 
        var wmsLayer = L.tileLayer.Rosreestr('https://pkk.rosreestr.ru/arcgis/rest/services/PKK6/CadastreObjects/MapServer/export?layers=show%3A30%2C27%2C24%2C23%2C22&dpi=96&format=PNG32&bboxSR=102100&imageSR=102100&size=1024%2C1024&transparent=true&f=image&bbox={bbox}', {
 
         tileSize: 1024,
-        attribution: 'Публичная кадастровая карта'
+        attribution: 'Публичная кадастровая карта',
+        maxZoom: 20
        }).addTo(map);
 
        var wmsLayertz = L.tileLayer.Rosreestr('https://pkk.rosreestr.ru/arcgis/rest/services/PKK6/ZONES/MapServer/export?layers=show%3A5&dpi=96&format=PNG32&bbox={bbox}&bboxSR=102100&imageSR=102100&size=1024%2C1024&transparent=true&f=image&_ts=false', {
 
         tileSize: 1024,
-        attribution: 'Публичная кадастровая карта'
+        attribution: 'Публичная кадастровая карта',
+        maxZoom: 20
        });
 
         var wmsLayercc = L.tileLayer.Rosreestr('https://pkk.rosreestr.ru/arcgis/rest/services/PKK6/ZONES/MapServer/export?layers=show%3A8&dpi=96&format=PNG32&bbox={bbox}&bboxSR=102100&imageSR=102100&size=1024%2C1024&transparent=true&f=image&_ts=false', {
         tileSize: 1024,
-        attribution: 'Публичная кадастровая карта'
+        attribution: 'Публичная кадастровая карта',
+        maxZoom: 20
        });
 
         var wmsLayerzouit = L.tileLayer.Rosreestr('https://pkk.rosreestr.ru/arcgis/rest/services/PKK6/ZONES/MapServer/export?layers=show%3A4%2C3%2C2%2C1&dpi=96&format=PNG32&bbox={bbox}&bboxSR=102100&imageSR=102100&size=1024%2C1024&transparent=true&f=image&_ts=false', {
         tileSize: 1024,
-        attribution: 'Публичная кадастровая карта'
+        attribution: 'Публичная кадастровая карта',
+        maxZoom: 20
        });
 
        var mapboxUrl = "https://pkk.rosreestr.ru/arcgis/rest/services/Hosted/caddivsion/VectorTileServer/tile/{z}/{y}/{x}.pbf";
@@ -289,6 +296,7 @@ map.on('click', function(ev) {
     const form = lat + ',' + lng;
     let data = {kadnum: form.replaceAll(' ', '')};
     searchObj(data);
+    document.getElementById('backtolist').classList.add('d-none');
        // ev is an event object (MouseEvent in this case)
 });
 
