@@ -1,5 +1,3 @@
-from enum import verify
-
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from fake_useragent import UserAgent
