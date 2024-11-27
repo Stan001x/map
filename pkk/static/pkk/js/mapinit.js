@@ -26,7 +26,15 @@ const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstra
     maxZoom: 20
 }).addTo(map);
 
-       var wmsLayer = L.tileLayer.Rosreestr('https://pkk.rosreestr.ru/arcgis/rest/services/PKK6/CadastreObjects/MapServer/export?layers=show%3A30%2C27%2C24%2C23%2C22&dpi=96&format=PNG32&bboxSR=102100&imageSR=102100&size=1024%2C1024&transparent=true&f=image&bbox={bbox}', {
+ /*      var wmsLayer = L.tileLayer.Rosreestr('https://pkk.rosreestr.ru/arcgis/rest/services/PKK6/CadastreObjects/MapServer/export?layers=show%3A30%2C27%2C24%2C23%2C22&dpi=96&format=PNG32&bboxSR=102100&imageSR=102100&size=1024%2C1024&transparent=true&f=image&bbox={bbox}', {
+
+        tileSize: 1024,
+        attribution: 'Публичная кадастровая карта',
+        maxZoom: 20
+       }).addTo(map);*/
+
+
+        var wmsLayer = L.tileLayer.Rosreestr('tiles/?bbox={bbox}', {
 
         tileSize: 1024,
         attribution: 'Публичная кадастровая карта',

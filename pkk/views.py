@@ -1,11 +1,17 @@
+from enum import verify
+
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
+from fake_useragent import UserAgent
 from rosreestr_api.clients.rosreestr import PKKRosreestrAPIClient, RosreestrAPIClient, AddressWrapper
 import requests
 import json, re
-import ssl
 from tests import pkk_client_fixtures
 from django.views.generic import TemplateView
+from bs4 import BeautifulSoup
+from PIL import Image
+from io import BytesIO
+
 
 api_client = PKKRosreestrAPIClient()
 
@@ -36,6 +42,9 @@ okstypedict = {'construction': 'Сооружение',
 typedict = {1: 'Земельный участок',
             5: 'Объект капитального строительства',
             6: 'Территориальная зона'}
+
+areatypedict = {"009": 'уточненная',
+            "008": 'декларированная',}
 
 def _strip_cadastral_id(cadastral_id):
     stripped_cadastral_id = []
@@ -112,6 +121,10 @@ def pkk(request):
                             a = data1['feature']['attrs']['parcel_type']
                             data1['feature']['attrs']['parcel_type'] = parceltypedict[a]
                             print(data1['feature']['attrs']['parcel_type'])
+                        if data1['feature']['attrs']['area_type'] in areatypedict:
+                            a = data1['feature']['attrs']['area_type']
+                            data1['feature']['attrs']['area_type'] = areatypedict[a]
+                            print(data1['feature']['attrs']['area_type'])
                         return JsonResponse(data1, safe=False)
                     else:
                         print('xren')
@@ -181,3 +194,18 @@ def pk(request):
 
 def pks(request):
     return render(request,'pkk/pks.html')
+
+async def tiles(request):
+        if request.method == 'GET':
+            a = request.GET['bbox']
+            search_params = {'bboxsr': 102100,'bbox': a}
+            urltile = api_client.SEARCH_TILES_URL.format(**search_params)
+            datatile = api_client.get_tiles(**search_params)
+            #context = ssl._create_unverified_context()
+            #context.set_ciphers('ALL:@SECLEVEL=1')
+            #print('start')
+            #async with httpx.AsyncClient(verify=context) as client:
+             #   response = await client.get(url, headers=headers)
+            return HttpResponse(datatile)
+
+
