@@ -6,8 +6,6 @@ import requests
 import json, re
 from tests import pkk_client_fixtures
 from django.views.generic import TemplateView
-from bs4 import BeautifulSoup
-from PIL import Image
 from io import BytesIO
 
 
