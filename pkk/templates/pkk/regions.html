@@ -2,7 +2,7 @@
 {% load static %}
 
 
-{% block title %}<title>Публичная кадастровая карта Новосибирской области {% now "Y" %}</title>{% endblock title %}
+{% block title %}<title>Публичная кадастровая карта {{ region.region_rus_name2 }} {% now "Y" %}</title>{% endblock title %}
 
 {% block description %}<meta name="description" content="Получить полную информацию по земельным участкам и объектам капитального строительства на Публичной кадастровой карте по кадастровому номеру, координатам">{% endblock description %}
 
@@ -39,7 +39,7 @@
         <div class="mx-sm-3 position-absolute resultsbody" style="">
             <div class="d-none p-3" id="resulthead"><div class="flex-grow-1" id="noborders"></div><div><button type="button" class="btn-close" id="btn-close" aria-label="Close"></button></div></div>
             <div id="takeorder" class="text-center p-2 d-none" >
-                <button onclick="ym(57586846,'reachGoal','pkk-order'); return true;" type="button" class="btn btn-primary animated-button8" id="orderbutton"><span></span><span></span><span></span><span></span>Заказать кадастровые работы</button>
+                <button onclick="ym(57586846,'reachGoal','pkk-order-regions'); return true;" type="button" class="btn btn-primary animated-button8" id="orderbutton"><span></span><span></span><span></span><span></span>Заказать кадастровые работы</button>
                 <div id="wabuttons" class="d-none d-flex justify-content-around orderbuttons">
                     <div >
                         <a style="font-size: 1.25em" target="_blank" rel="noopener noreferrer" href="https://wa.me/79513626504?text=Здравствуйте,%20интересуют%20кадастровые%20работы%20..." aria-label="Custom" >
@@ -65,10 +65,9 @@
     </div>
 </div>
 
-
 <div class="d-none">
-    <div id="region_lat">55.0302</div>
-    <div id="region_lng">82.9205</div>
+    <div id="region_lat">{{ region.lat }}</div>
+    <div id="region_lng">{{ region.lng }}</div>
 </div>
 
 {% endblock %}

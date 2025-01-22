@@ -1,7 +1,7 @@
 const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
 const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
       // Создаем карту
-      var map = L.map('map').setView([55.0302, 82.9205], 15); // Новосибирск
+      var map = L.map('map').setView([document.getElementById('region_lat').innerHTML, document.getElementById('region_lng').innerHTML], 15); // Новосибирск
 
       // Добавляем базовые тайлы (Яндекс Карты)
       /*L.tileLayer('https://tiles.api-maps.yandex.ru/v1/tiles/?x=9902&y=5137&z=14&lang=ru_RU&l=map&apikey=5d79c54c-d4f6-44a5-92f5-de2250c24722', {
@@ -34,12 +34,35 @@ const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstra
        }).addTo(map);*/
 
 
-        var wmsLayer = L.tileLayer.Rosreestr('tiles/?bbox={bbox}', {
-
-        tileSize: 1024,
+        var wmsLayer = L.tileLayer.Rosreestr('/tiles/?bbox={bbox}', {
+        tileSize: 512,
         attribution: 'Публичная кадастровая карта',
         maxZoom: 20
        }).addTo(map);
+
+       var parceltextLayer = L.tileLayer.Rosreestr('/parceltext/?bbox={bbox}', {
+        tileSize: 512,
+        attribution: 'Публичная кадастровая карта',
+        maxZoom: 20
+       });
+
+       var buildingLayer = L.tileLayer.Rosreestr('/building/?bbox={bbox}', {
+        tileSize: 512,
+        attribution: '',
+        maxZoom: 20
+       }).addTo(map);
+
+        var constructionLayer = L.tileLayer.Rosreestr('/construction/?bbox={bbox}', {
+        tileSize: 512,
+        attribution: '',
+        maxZoom: 20
+       });
+
+        var uncompliteLayer = L.tileLayer.Rosreestr('/uncomplite/?bbox={bbox}', {
+        tileSize: 512,
+        attribution: '',
+        maxZoom: 20
+       });
 
        var wmsLayertz = L.tileLayer.Rosreestr('https://pkk.rosreestr.ru/arcgis/rest/services/PKK6/ZONES/MapServer/export?layers=show%3A5&dpi=96&format=PNG32&bbox={bbox}&bboxSR=102100&imageSR=102100&size=1024%2C1024&transparent=true&f=image&_ts=false', {
 
@@ -283,7 +306,11 @@ const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstra
 };
 
 var overlays = {
-    "Росреестр": wmsLayer,
+    "Земельные участки": wmsLayer,
+    "Подписи ЗУ": parceltextLayer,
+    "Здания": buildingLayer,
+    "Сооружения": constructionLayer,
+    "Объекты незавершенного строительства": uncompliteLayer,
     "Территориальные зоны": wmsLayertz,
     "Красные линии": wmsLayercc,
     "Кадастровые квартала": mapboxPbfLayer,
@@ -298,11 +325,20 @@ L.control.attribution( {prefix: false, });
 
 map.on('click', function(ev) {
    b =ev.latlng;
+   console.log(b);
    lat = b.lat.toFixed(6);
    lng = b.lng.toFixed(6);
    var tooltip = L.tooltip(b, {content: lat + ', ' + lng,}).addTo(map);
-    const form = lat + ',' + lng;
+//   console.log(map)
+//   if (map.marker) {
+//   map.removeLayer(marker);};
+
+//    const form = lat + ',' + lng;
+    var lg = new L.latLng(b.lat, b.lng); // Lon/Lat
+    var point = L.Projection.SphericalMercator.project(lg);
+    const form = point.x + ',' + point.y;
     let data = {kadnum: form.replaceAll(' ', '')};
+    console.log(data);
     searchObj(data);
     document.getElementById('backtolist').classList.add('d-none');
        // ev is an event object (MouseEvent in this case)

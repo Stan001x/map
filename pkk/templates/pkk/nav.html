@@ -37,7 +37,7 @@
                 <a class="nav-link text-white px-3" href="https://reestr54.ru/kontakty">Контакты</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text-white px-3" href="/">Кадастровая карта</a>
+                <a class="nav-link text-white px-3" href="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ request.path }}">Кадастровая карта</a>
               </li>
             </ul>
           </div>
